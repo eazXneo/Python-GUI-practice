@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from image_widgets import ImageImport, ImageOutput
+from image_widgets import *
 from PIL import Image, ImageTk
 
 class App(ctk.CTk):
@@ -27,21 +27,52 @@ class App(ctk.CTk):
         print(path)  # DEBUG
         # TODO: case when dialog opened but no image selected, AttributeError
         self.image = Image.open(path)
+        self.image_ratio = self.image.size[0] / self.image.size[1]
         self.image_tk = ImageTk.PhotoImage(self.image)
 
         # DEBUG, display with Python
-        # self.image.show()  
+        # self.image.show()
         # display within tkinter
         # hide the image import widget
         self.image_import.grid_forget()
-        self.image_output = ImageOutput(self)
+        self.image_output = ImageOutput(self, self.resize_image)
 
         # s.ab.(+WIT) rather than passing in the image into ImageOutput, 
         #  we want to keep the image within the App class (s.ab. logic staying contained)
 
-        self.resize_image()
+        # self.resize_image()
 
-    def resize_image(self):
-        self.image_output.create_image(0, 0, image=self.image_tk)
+        self.close_button = CloseOutput(self)
+    
+    def close_edit(self):
+        # hide image and close button
+        # TODO: which forgets to use!!
+        self.image_output.grid_forget()
+        self.close_button.place_forget()
+
+        # recreate the import button
+        self.image_import = ImageImport(self, self.import_image)
+
+    def resize_image(self, event):
+        # resize image (don't want to cut parts off the image when resizing window)
+        # need the aspect ratio of image
+        #  and canvas
+        canvas_ratio = event.width / event.height
+        if canvas_ratio > self.image_ratio:  # image should fit in hor
+            image_height = int(event.height)
+            image_width = int(image_height * self.image_ratio)
+        else:  # image does not fit in hor
+            image_width = int(event.width)
+            image_height = int(image_width / self.image_ratio)
+
+        # placing the image
+        # need to remove the previous image
+        self.image_output.delete("all")
+        resized_image = self.image.resize((image_width, image_height))
+        self.image_tk = ImageTk.PhotoImage(resized_image)
+
+        # print(event)
+        # seems to be centering the image (not top-left like Pygame)
+        self.image_output.create_image(event.width/2, event.height/2, image=self.image_tk)
 
 App()
