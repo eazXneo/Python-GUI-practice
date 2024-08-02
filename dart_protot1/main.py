@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
+from image_imports import *
 
 import os
 
@@ -19,7 +20,6 @@ class App(tk.Tk):
         super().__init__()
         self.geometry("1000x600")
         self.title("DART prototype 1")
-
         self.minsize(800,500)
         self.configure(bg="darkgrey")  # DEBUG: need borders for now 
 
@@ -31,14 +31,17 @@ class App(tk.Tk):
         self.columnconfigure(1, weight=2)
 
         # widgets
+        # ImportButton (Frame + Button)
+        self.import_imgs_button = ImageImport(self)
+
         # Create left and right frames
         left_frame  =  ttk.Frame(self, width=650,  height=400)
         left_frame.grid(row=0,  column=0, rowspan=3,  padx=10,  pady=10)
         right_frame  =  ttk.Frame(self, width=650,  height=400)
         right_frame.grid(row=0,  column=1, rowspan=3, padx=10,  pady=10)
 
-        right_frame_top  =  ttk.Frame(right_frame, width=200,  height=200)
-        right_frame_top.grid(row=0,  column=1,  padx=10,  pady=25)
+        # right_frame_top  =  ttk.Frame(right_frame, width=200,  height=200)
+        # right_frame_top.grid(row=0,  column=1,  padx=10,  pady=25)
         right_frame_middle  =  ttk.Frame(right_frame, width=200,  height=400)
         right_frame_middle.grid(row=1,  column=1,  padx=10,  pady=25)
         right_frame_bottom  =  ttk.Frame(right_frame, width=200,  height=200)
@@ -59,7 +62,7 @@ class App(tk.Tk):
             print("Clicked.")
 
         # For now, when the buttons are clicked, they only call the clicked() method. We will add functionality later.
-        ttk.Button(right_frame_top,  text="Select image (/ folder)",  command=clicked).grid(row=0,  column=0,  padx=5,  pady=5,  sticky='w'+'e'+'n'+'s')
+        # ttk.Button(right_frame_top,  text="Select image (/ folder)",  command=clicked).grid(row=0,  column=0,  padx=5,  pady=5,  sticky='w'+'e'+'n'+'s')
 
         # Example labels that serve as placeholders for other widgets
         ttk.Label(right_frame_middle,  text="Crop edges",  relief="raised").grid(row=0,  column=0,  padx=5,  pady=3,  ipadx=10)
