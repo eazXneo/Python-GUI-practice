@@ -31,7 +31,7 @@ class ImageOutput(Canvas):
         # can get rid of the last 3 args
         # tkinter default colour
         super().__init__(master=parent, background=BACKGROUND_COLOR, bd=0, highlightthickness=0, relief="ridge")
-        self.grid(row=0, column=1, sticky="nsew")
+        self.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
         # TODO: WIT !!!
         self.bind("<Configure>", resize_image)
 
