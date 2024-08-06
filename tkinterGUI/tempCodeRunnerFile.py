@@ -1,1 +1,1 @@
-PhotoImage
+<Shift_L-
