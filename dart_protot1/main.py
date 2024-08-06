@@ -91,3 +91,5 @@ class App(tk.Tk):
 App()
 
 # TODO: all toggles should be one class.
+
+# TODO: 1 - playg4 for variables from GUI into program (DART)
