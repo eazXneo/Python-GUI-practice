@@ -43,3 +43,16 @@ class SliderPanel(Panel):
 
     def update_text(self, value):
         self.num_label.configure(text=f"{round(value, 2)}")
+
+class SegmentedPanel(Panel):
+    def __init__(self, parent, text, data_var, options):
+        super().__init__(parent=parent)
+        ctk.CTkLabel(self, text=text).pack()
+        ctk.CTkSegmentedButton(self, variable=data_var, values=options).pack(expand=True, fill="both", padx=4, pady=4)
+
+class SwitchPanel(Panel):
+    def __init__(self, parent, *args):  # tuple of tuples ((var, text), ... , (var, text))
+        super().__init__(parent=parent)
+
+        for var, text in args:
+            pass  # TODO

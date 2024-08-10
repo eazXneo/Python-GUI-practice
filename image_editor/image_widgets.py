@@ -33,7 +33,10 @@ class ImageOutput(Canvas):
         super().__init__(master=parent, background=BACKGROUND_COLOR, bd=0, highlightthickness=0, relief="ridge")
         self.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
         # TODO: WIT !!!
-        self.bind("<Configure>", resize_image)
+        #  I'm guessing, everytime the window is re-sized, the canvas gets a new size because sticky.
+        #  So implicitly it calls "configure" every pixel moved, and so we bind this to change 
+        #  the image every time as well as the canvas.
+        self.bind("<Configure>", resize_image) 
 
 
 # s.ab. only showing the close button when showing an image. So in this file.

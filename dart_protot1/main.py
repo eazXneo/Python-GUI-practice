@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
-from image_imports import *
+from image_widgets import *
 
 import os
 

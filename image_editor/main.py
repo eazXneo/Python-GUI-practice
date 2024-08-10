@@ -14,7 +14,7 @@ class App(ctk.CTk):
         
         self.init_parameters()
 
-        # layout
+        # layout    
         self.rowconfigure(0, weight=1)
         # TODO: WIT "uniform"
         self.columnconfigure(0, weight=2, uniform="a")
@@ -34,21 +34,36 @@ class App(ctk.CTk):
         self.mainloop()
 
     def init_parameters(self):
-        self.rotate_float = ctk.DoubleVar(value=ROTATE_DEFAULT)
-        self.zoom_float = ctk.DoubleVar(value=ZOOM_DEFAULT)
+        self.pos_vars = {
+            "rotate": ctk.DoubleVar(value=ROTATE_DEFAULT),
+            "zoom": ctk.DoubleVar(value=ZOOM_DEFAULT),
+            "flip": ctk.StringVar(value=FLIP_OPTIONS[0])
+        }
+        self.colour_vars = {
+            "brightness": ctk.DoubleVar(value=BRIGHTNESS_DEFAULT),
+            "greyscale": ctk.BooleanVar(value=GREYSCALE_DEFAULT),
+            "invert": ctk.BooleanVar(value=INVERT_DEFAULT),
+            "vibrance": ctk.DoubleVar(value=VIBRANCE_DEFAULT)
+        }
+        self.effect_vars = {
+            "blur": ctk.DoubleVar(value=BLUR_DEFAULT),
+            "contrast": ctk.IntVar(value=CONTRAST_DEFAULT),
+            "effect": ctk.StringVar(value=EFFECT_OPTIONS[0])
+        }
+        combined_vars = list(self.pos_vars.values()) + list(self.colour_vars.values()) + list(self.effect_vars.values())
 
         # trace changes to the var << ?
-        self.rotate_float.trace("w", self.manipulate_image)  # TODO: WIT trace
-        self.zoom_float.trace("w", self.manipulate_image)
+        for var in combined_vars:
+            var.trace("w", self.manipulate_image)
 
     def manipulate_image(self, *args):  # TODO: WIT '*args'
         self.image = self.original
 
         # rotate (# use the var value to change the image << bind/trace..?)
-        self.image = self.image.rotate(self.rotate_float.get())
+        self.image = self.image.rotate(self.pos_vars["rotate"].get())
 
         # zoom (this is the simplest zoom option in PIL, but does stretch images a bit)
-        self.image = ImageOps.crop(image=self.image, border=self.zoom_float.get())
+        self.image = ImageOps.crop(image=self.image, border=self.pos_vars["zoom"].get())
 
         self.place_image()
 
@@ -72,7 +87,7 @@ class App(ctk.CTk):
 
         self.close_button = CloseOutput(self, self.close_edit)
         # connect the var to the slider << pass the value on and on
-        self.menu = Menu(self, self.rotate_float, self.zoom_float)
+        self.menu = Menu(self, self.pos_vars, self.colour_vars, self.effect_vars)
     
     def close_edit(self):
         # hide image and close button
@@ -85,8 +100,12 @@ class App(ctk.CTk):
         self.image_import = ImageImport(self, self.import_image)
 
     def resize_image(self, event):
-        # resize image (don't want to cut parts off the image when resizing window)
-        # need the aspect ratio of canvas
+        """
+        takes the canvas width:height ratio to then fit the image within the canvas, 
+        preserving the image ratio but not cutting off the edges.
+        """
+        # print(event)  # DEBUG
+
         canvas_ratio = event.width / event.height
 
         # update canvas attributes
