@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from PIL import Image, ImageTk, ImageOps
+from PIL import Image, ImageTk, ImageOps, ImageEnhance
 from image_widgets import *
 from menu import Menu
 
@@ -64,6 +64,21 @@ class App(ctk.CTk):
 
         # zoom (this is the simplest zoom option in PIL, but does stretch images a bit)
         self.image = ImageOps.crop(image=self.image, border=self.pos_vars["zoom"].get())
+
+        # flip
+        if self.pos_vars["flip"].get() == "X":
+            self.image = ImageOps.mirror(self.image)
+        if self.pos_vars["flip"].get() == "Y":
+            self.image = ImageOps.flip(self.image)
+        if self.pos_vars["flip"].get() == "Both":
+            self.image = ImageOps.mirror(self.image)
+            self.image = ImageOps.flip(self.image)
+
+        # brightness & vibrance
+        brightness_enhancer = ImageEnhance.Brightness(self.image)
+        self.image = brightness_enhancer.enhance(self.colour_vars["brightness"].get())
+        vibrance_enhancer = ImageEnhance.Color(self.image)
+        self.image = vibrance_enhancer.enhance(self.colour_vars["vibrance"].get())
 
         self.place_image()
 

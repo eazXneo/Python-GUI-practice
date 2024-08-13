@@ -55,4 +55,17 @@ class SwitchPanel(Panel):
         super().__init__(parent=parent)
 
         for var, text in args:
-            pass  # TODO
+            switch = ctk.CTkSwitch(self, text=text, variable=var, button_color=BLUE, fg_color=SLIDER_BG)
+            switch.pack(side="left", expand=True, fill="both", padx=5, pady=5)
+
+class DropDownPanel(ctk.CTkOptionMenu):
+    def __init__(self, parent, data_var, options):
+        super().__init__(
+            master=parent, 
+            values=options,
+            fg_color=DARK_GREY,
+            button_color=DROPDOWN_MAIN_COLOUR,
+            button_hover_color=DROPDOWN_HOVER_COLOUR,
+            dropdown_fg_color=DROPDOWN_MENU_COLOUR,
+            variable=data_var)
+        self.pack(fill="x", pady=4)

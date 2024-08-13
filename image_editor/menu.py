@@ -32,6 +32,7 @@ class ColourFrame(ctk.CTkFrame):
         super().__init__(master=parent, fg_color="transparent")
         self.pack(expand=True, fill="both")
 
+        SwitchPanel(self, (colour_vars["greyscale"], "B/W"), (colour_vars["invert"], "Invert"))
         SliderPanel(self, "Brightness", colour_vars["brightness"], 0, 5)
         SliderPanel(self, "Vibrance", colour_vars["vibrance"], 0, 5)
 
@@ -40,5 +41,6 @@ class EffectFrame(ctk.CTkFrame):
         super().__init__(master=parent, fg_color="transparent")
         self.pack(expand=True, fill="both")
 
+        DropDownPanel(self, effect_vars["effect"], EFFECT_OPTIONS)
         SliderPanel(self, "Blur", effect_vars["blur"], 0, 3)
         SliderPanel(self, "Contrast", effect_vars["contrast"], 0, 10)
