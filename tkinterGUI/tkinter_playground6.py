@@ -23,7 +23,7 @@ button.pack()
 # window.bind('<Control-z>', lambda event: print("an event happened"))
 # window.bind('<Control-z>', lambda event: print(event))
 # button.bind('<Control-z>', lambda event: print(event))
-# window.bind('<KeyPress>', lambda event: print(f'a button wßas pressed ({event.char})'))
+# window.bind('<KeyPress>', lambda event: print(f'a button was pressed ({event.char})'))
 # window.bind("<Motion>", get_pos)
 # text.bind("<Motion>", get_pos)
 
