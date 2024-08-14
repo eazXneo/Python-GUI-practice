@@ -1,3 +1,4 @@
+import os
 import customtkinter as ctk
 from PIL import Image, ImageTk, ImageOps, ImageEnhance, ImageFilter
 from image_widgets import *
@@ -118,7 +119,7 @@ class App(ctk.CTk):
 
         self.close_button = CloseOutput(self, self.close_edit)
         # connect the var to the slider << pass the value on and on
-        self.menu = Menu(self, self.pos_vars, self.colour_vars, self.effect_vars)
+        self.menu = Menu(self, self.pos_vars, self.colour_vars, self.effect_vars, self.export_image)
     
     def close_edit(self):
         # hide image and close button
@@ -163,5 +164,9 @@ class App(ctk.CTk):
         # print(event)
         # seems to be centering the image (not top-left like Pygame)
         self.image_output.create_image(self.canvas_width/2, self.canvas_height/2, image=self.image_tk)
+
+    def export_image(self, name, file_ext, path):
+        export_string = f"{path}{os.sep}{name}.{file_ext}"
+        self.image.save(export_string)
 
 App()
